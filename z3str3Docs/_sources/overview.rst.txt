@@ -1,0 +1,13 @@
+.. Z3Str3 String Solver Documentation documentation
+ 
+Overview
+========
+
+Z3str3 is a constraint solver for the quantifier-free theory of string equations, the regular-expression membership predicates, and linear arithmetic over the length functions. Z3str3 is now part of the Z3 theorem prover's main codebase, and is the primary string solver in Z3.
+
+
+The Z3str3 string solver (theory_str) works with terms in the theory of strings with integer length and regular expressions. It also contains extensions for integration with bit-vector reasoning (e.g. C/C++ string operations), as well as native encodings of string library methods in other programming languages.
+
+
+|
+|

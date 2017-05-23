@@ -1,0 +1,450 @@
+.. Z3 String Solver Documentation documentation
+
+ 
+Input Language
+==============
+
+|
+|
+
+Input Language Summary
+----------------------
+
+
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+|                        | Sort                                                 | SMT-LIB                                                                            | C++ API                          |
++========================+======================================================+====================================================================================+==================================+
+| :ref:`section-string-primitives`                                                                                                                                                                      |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| String literal         | :code:`String`                                       | Any sequence of printable ASCII characters enclosed in double quotes (:code:`“”`), | Z3_mk_str                        |
+|                        |                                                      | such as :code:`“example123”`. A double-quote can be escaped as :code:`\”`.         |                                  |
+|                        |                                                      | See the SMT-LIB 2.5 specification for details.                                     |                                  |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| String variable        | :code:`String`                                       | :code:`(declare-const X String)`, or equivalently,                                 |                                  |
+|                        |                                                      | :code:`(declare-fun X () String)`                                                  |                                  |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| String concatenation   | :code:`String x String -> String`                    | :code:`(str.++ "exa" "mple")`                                                      | Z3_mk_str_concat                 |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| String length          | :code:`String -> Int`                                | :code:`(str.len "abc123")`                                                         | Z3_mk_str_length                 |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| String equality        | :code:`String x String -> Bool`                      | :code:`(= X "abc")`                                                                |                                  |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| :ref:`section-higher-level-functions`                                                                                                                                                                 |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Character at index     | :code:`String x Int -> String`                       | :code:`(str.at "abc" 2)`                                                           | Z3_mk_str_at                     |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Substring              | :code:`String x Int x Int -> String`                 | :code:`(str.substr "abcdef" start count)`                                          | Z3_mk_str_substr                 |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Prefix predicate       | :code:`String x String -> Bool`                      | :code:`(str.prefixof sPrefix sFull)`                                               | Z3_mk_str_prefixof               |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Suffix predicate       | :code:`String x String -> Bool`                      | :code:`(str.suffixof sSuffix sFull)`                                               | Z3_mk_str_suffixof               |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Contains predicate     | :code:`String x String -> Bool`                      | :code:`(str.contains sHaystack sNeedle)`                                           | Z3_mk_str_contains               |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Index of occurrence    | :code:`String x String x Int -> Int`                 | :code:`(str.indexof sHaystack sNeedle iStart)`                                     | Z3_mk_str_indexof                |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Single replacement     | :code:`String x String x String -> String`           | :code:`(str.replace sBase sTarget sReplacement)`                                   | Z3_mk_str_replace                |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| String to integer      | :code:`String -> Int`                                | :code:`(str.to-int "123")`                                                         |                                  |
+| conversion             |                                                      |                                                                                    |                                  |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Integer to string      | :code:`Int -> String`                                | :code:`(str.from-int 123)`                                                         |                                  |
+| conversion             |                                                      |                                                                                    |                                  |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| :ref:`section-regular-expressions`                                                                                                                                                                    |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| String to regex        | :code:`String -> Regex`                              | :code:`(str.to.re "abc123")`                                                       | Z3_mk_str_to_regex               |
+| (match literal)        |                                                      |                                                                                    |                                  |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Regular language       | :code:`String x Regex -> Bool`                       | :code:`(str.in.re S R)`                                                            | Z3_mk_str_in_regex               |
+| membership             |                                                      |                                                                                    |                                  |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Regex concatenation    | :code:`Regex x Regex -> Regex`                       | :code:`(re.++ R1 R2)`                                                              | Z3_mk_regex_concat               |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Regex union            | :code:`Regex x Regex -> Regex`                       | :code:`(re.union R1 R2)`                                                           | Z3_mk_regex_union                |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Regex Kleene star      | :code:`Regex -> Regex`                               | :code:`(re.* R)`                                                                   | Z3_mk_regex_star                 |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Regex plus             | :code:`Regex -> Regex`                               | :code:`(re.+ "abc123")`                                                            | Z3_mk_regex_plus                 |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| Regex character range  | :code:`String x String -> Regex`                     | :code:`(re.range "a" "z")`                                                         | Z3_mk_regex_range                |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| **Bit-Vector Integration (Chapter TBD)**                                                                                                                                                              |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+| **Library-Aware String Methods (Chapter TBD)**                                                                                                                                                        |
++------------------------+------------------------------------------------------+------------------------------------------------------------------------------------+----------------------------------+
+
+
+
+|
+
+.. _section-string-primitives:
+
+String Primitives
+-----------------
+
+|
+
+String literals
+^^^^^^^^^^^^^^^
+
+String literals are expressed as a sequence of ASCII printable characters enclosed in double quotes.
+In SMT-LIB 2.5 syntax, a double quote is escaped inside a string as :code:`""`. All other escape sequences are interpreted in the usual way,
+e.g. the sequence :code:`\t` is expanded to a tab character, the sequence :code:`\\` is expanded to a single backslash, etc.
+In addition, the character sequence :code:`\xNN` is a hexadecimal escape, where :code:`NN` is a two-digit hexadecimal constant
+(using any of 0-9a-fA-F as hex digits) and the sequence is converted to the single ASCII character having the given hexadecimal value.
+
+**Examples:**
+
+The following are all valid SMT-LIB 2.5 string literals::
+
+  "abc"
+  "123;456"
+  "say ""hello"" everyone"
+
+The following is also a valid SMT-LIB 2.5 string literal::
+
+  "field1\tfield2"
+
+It is expanded to the following sequence of characters (spaces added for clarity)::
+
+  f i e l d 1 TAB f i e l d 2
+
+The string literals "\x41" and "A" represent identical string constants, even though they are written two different ways.
+  
+|
+
+String variables
+^^^^^^^^^^^^^^^^
+
+Variables may be declared with standard SMT-LIB 2.5 syntax, i.e.
+:code:`(declare-const X String)` for a variable X of sort :code:`String`,
+or equivalently, :code:`(declare-fun X () String)`.
+
+|
+
+String concatenation
+^^^^^^^^^^^^^^^^^^^^
+
+Two strings may be concatenated with the :code:`str.++` operator.
+The interpretation of this operator is equal to a string formed by appending
+the characters in the second argument to the characters in the first argument,
+keeping them in the same relative order.
+
+**Examples:**
+
+:code:`(str.++ "abc" "def") ::= "abcdef"`
+
+:code:`(str.++ "123" "") ::= "123"`
+
+|
+
+String length
+^^^^^^^^^^^^^
+
+The length of a string may be expressed using the :code:`str.len` operator.
+The length of a string is equal to the number of characters in the string.
+This length is of sort :code:`Int` and as a result
+is an arbitrary-precision natural number.
+
+**Examples:**
+
+:code:`(str.len "") ::= 0`
+
+:code:`(str.len "abcdef") ::= 6`
+
+For information on alternative length semantics that model fixed-precision overflow such as in C/C++ string operations, please refer to Chapter TBD.
+      
+|
+      
+String equality
+^^^^^^^^^^^^^^^
+
+Equality between any two terms of :code:`String` sort may be asserted with the :code:`=` operator.
+Two strings are considered equal iff they contain the same characters appearing in the same order.
+
+**Examples:**
+
+:code:`(= (str.++ "abc" "") (str.++ "" "abc")) ::= True`
+
+:code:`(= (str.++ "abc" "def) ("abcdefGHI)) ::= False`
+
+
+|
+|
+
+.. _section-higher-level-functions:
+      
+Higher-Level Functions
+----------------------
+
+|
+
+Character at index
+^^^^^^^^^^^^^^^^^^
+
+The term :code:`(str.at Str Idx)` selects the single character at integer index :code:`Idx`
+in the string :code:`Str`. The first character in a (non-empty) string occurs at index 0.
+If :code:`Idx` is less than 0 or would index a character past the end of the string,
+the value of this term is the empty string :code:`""`. Otherwise,
+the value of this term is a string of length 1 corresponding to the index character in :code:`Str`.
+
+**Examples:**
+
+:code:`(str.at "abcde" 2) ::= "c"`
+
+:code:`(str.at "abcde" 5) ::= ""`
+
+:code:`(str.at "abcde" -1) ::= ""`
+ 
+ 
+|
+      
+Substring
+^^^^^^^^^
+
+The term :code:`(str.substr Str Start Len)` denotes the substring of :code:`Str` of length :code:`Len`,
+taken beginning at index :code:`Start`.
+If :code:`Start` is less than 0 or would denote a position past the end of the string,
+or if the resulting substring would extend past the end of :code:`Str`,
+the value of this term is undefined.
+
+**Examples:**
+
+:code:`(str.substr "abcde" 1 3) ::= "bcd"`
+
+|
+
+Prefix predicate
+^^^^^^^^^^^^^^^^
+
+The term :code:`(str.prefixof Pre Full)` is a predicate that is true iff
+the string :code:`Pre` is a prefix of the string :code:`Full`.
+More precisely, :code:`(str.prefixof Pre Full)` is true iff there exists a string :code:`S`
+such that :code:`Full == (str.++ Pre S)`.
+
+**Examples:**
+
+:code:`(str.prefixof "abc" "abcde") ::= True`
+
+:code:`(str.prefixof "cde" "abcde") ::= False`
+
+|
+
+Suffix predicate
+^^^^^^^^^^^^^^^^
+
+The term :code:`(str.suffixof Post Full)` is a predicate that is true iff
+the string :code:`Post` is a suffix of the string :code:`Full`.
+More precisely, :code:`(str.suffixof Post Full)` is true iff there exists a string :code:`S`
+such that :code:`Full == (str.++ S Post)`.
+
+**Examples:**
+
+:code:`(str.suffixof "cde" "abcde") ::= True`
+
+:code:`(str.suffixof "abc" "abcde") ::= True`
+
+|
+
+Contains predicate
+^^^^^^^^^^^^^^^^^^
+
+The term :code:`(str.contains Haystack Needle)` is a predicate that is true
+iff the string :code:`Haystack` contains the string :code:`Needle`.
+More precisely, :code:`(str.contains Haystack Needle)` is true iff
+there exist strings :code:`S` and :code:`T` such that
+:code:`Haystack == (str.++ S (str.++ Needle T))`.
+
+**Examples:**
+
+:code:`(str.contains "abcde" "bc") ::= True`
+
+:code:`(str.contains "abcde" "ae") ::= False`
+
+|
+
+Index of occurrence
+^^^^^^^^^^^^^^^^^^^
+
+The term :code:`(str.indexof Haystack Needle Start)`
+is the integer position of the first occurrence of the string :code:`Needle`
+in the string :code:`Haystack` at or after the integer index :code:`Start`,
+if any. If :code:`Needle` is not a substring of :code:`Haystack`,
+or :code:`Start` is either negative or denotes a position beyond the end of :code:`Haystack`,
+or :code:`Needle` is the empty string, then the value of this term is -1.
+
+**Examples:**
+
+:code:`(str.indexof "AbcAbcAbc" "Abc" 2) ::= 3`
+
+:code:`(str.indexof "AbcAbcAbc" "xyz" 0) ::= -1`
+
+:code:`(str.indexof "AbcAbcAbc" "Abc" 10) ::= -1`
+
+|
+
+Single replacement
+^^^^^^^^^^^^^^^^^^
+
+The term :code:`(str.replace Base Target Replacement)`
+is equal to the string obtained by replacing the first occurrence of
+:code:`Target` in the string :code:`Base` with the string :code:`Replacement`.
+If the string :code:`Target` does not occur in :code:`Base`,
+the term is equal to the unchanged string :code:`Base`.
+
+**Examples:**
+
+:code:`(str.replace "abcXYZdeXYZf" "XYZ" "999") ::= "abc999deXYZf"`
+
+:code:`(str.replace "ababc" "ab" "") ::= "abc"`
+
+:code:`(str.replace "abcdef" "xyz" "999") ::= "abcdef"`
+
+
+|
+
+String to integer conversion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The term :code:`(str.to-int Str)` is equal to the
+integer formed by the digits of the string :code:`Str`.
+Conversion to an integer is performed as follows:
+
+* If :code:`Str` is the empty string, the value of this term is -1.
+* If :code:`Str` contains any non-digit characters, the value of this term is -1.
+* Otherwise, the value of this term is the base-10 natural number represented by the digits of :code:`Str`.
+
+Note that leading zeroes are permitted but are effectively ignored.
+
+**Examples:**
+
+:code:`(str.to-int "123") ::= 123`
+
+:code:`(str.to-int "00123") ::= 123`
+
+:code:`(str.to-int "nine thousand") ::= -1`
+
+:code:`(str.to-int "-50") ::= -1`
+
+
+|
+
+Integer to string conversion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The term :code:`(str.from-int N)` is equal to the
+minimal base-10 string representation of the integer :code:`N`.
+Conversion to a string is performed as follows:
+
+* If :code:`N` is less than 0, the value of this term is the empty string :code:`""`.
+* If :code:`N` is equal to 0, the value of this term is the string :code:`"0"`.
+* Otherwise, the value of this term is a string :code:`S` containing only the digits 0 through 9,
+  does not contain any leading zeroes,
+  and is a base-10 string representation of :code:`N`, i.e. it satisfies :code:`(str.to-int S) == N`.
+
+**Examples:**
+
+:code:`(str.from-int 123) ::= "123"`
+
+:code:`(str.from-int 0) ::= "0"`
+
+:code:`(str.from-int -50) ::= ""`
+
+|
+|
+
+.. _section-regular-expressions:
+      
+Regular Expressions
+-------------------   
+
+Note that in all regular expression terms, subexpressions of sort :code:`Regex` must be constant expressions
+(i.e. they may not contain free variables, conditional expressions, etc.).
+
+|
+
+String to regex (match literal)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The term :code:`(str.to.re S)` defines the regular language whose only member is the string :code:`S`.
+The subexpression :code:`S` must be a string constant or constant expression; otherwise, an error is raised.
+
+|
+
+Regular language membership
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The term :code:`(str.in.re S R)` denotes the predicate that the string :code:`S` is a member of the regular language :code:`R`.
+
+**Examples:**
+
+:code:`(str.in.re "abc" (str.to.re "abc")) ::= True`
+
+:code:`(str.in.re "A" (re.++ (str.to.re "A") (str.to.re "B"))) ::= False`
+
+:code:`(str.in.re "A" (re.union (str.to.re "A") (str.to.re "B"))) ::= False`
+
+|
+
+Regex concatenation
+^^^^^^^^^^^^^^^^^^^
+
+The term :code:`(re.++ R1 R2)` denotes the regular language formed by concatenating any string in :code:`R1`
+with any string in :code:`R2`.
+
+**Examples:**
+
+:code:`(re.++ (str.to.re "A") (str.to.re "B")) ::= (str.to.re "AB")`
+
+|
+
+Regex union
+^^^^^^^^^^^
+
+The term :code:`(re.union R1 R2)` denotes the regular language that is the union of all strings in :code:`R1` and all strings in :code:`R2`.
+
+**Examples:**
+
+:code:`(re.union (str.to.re "A") (str.to.re "B"))` is the regular language :code:`{"A", "B"}`.
+
+
+|
+
+Regex Kleene star
+^^^^^^^^^^^^^^^^^
+
+The term :code:`(re.* R)` denotes the Kleene closure of the regular language :code:`R`, i.e., the language of all finite-length strings that can be formed
+by concatenating zero or more arbitrary members of :code:`R`.
+
+**Examples:**
+
+:code:`(re.* (str.to.re "A"))` is the regular language :code:`{"", "A", "AA", "AAA", ...}`.
+
+|
+
+Regex plus
+^^^^^^^^^^
+
+The term :code:`(re.+ R)` denotes the language of all finite-length strings that can be formed by concatenating *at least one* or more
+arbitrary members of :code:`R`. Unlike the Kleene star, the empty string is not a member of this language.
+
+**Examples:**
+
+:code:`(re.+ (str.to.re "A"))` is the regular language :code:`{"A", "AA", "AAA", ...}`.
+
+|
+
+Regex character range
+^^^^^^^^^^^^^^^^^^^^^
+
+The term :code:`(re.range C1 C2)` denotes a regular language containing each element in a range of ASCII characters.
+The strings :code:`C1, C2` must be string literals of length 1. The character range described is all ASCII characters
+from :code:`C1` up to and including :code:`C2`. It is not valid if the ASCII value of :code:`C2` is smaller than that of :code:`C1`.
+
+**Examples:**
+
+:code:`(re.range "a" "z")` is the regular language containing the characters :code:`{"a", "b", "c", ..., "x", "y", "z"}`.
+
+|
+|

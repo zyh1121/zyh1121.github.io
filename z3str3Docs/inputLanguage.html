@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Input Language &#8212; Z3Str3 String Solver 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Overview" href="overview.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Z3Str3 Documentation</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://sites.google.com/site/z3strsolver/">Project Homepage</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Index <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Input Language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#input-language-summary">Input Language Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#string-primitives">String Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#higher-level-functions">Higher-Level Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#regular-expressions">Regular Expressions</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Input Language</a><ul>
+<li><a class="reference internal" href="#input-language-summary">Input Language Summary</a></li>
+<li><a class="reference internal" href="#string-primitives">String Primitives</a><ul>
+<li><a class="reference internal" href="#string-literals">String literals</a></li>
+<li><a class="reference internal" href="#string-variables">String variables</a></li>
+<li><a class="reference internal" href="#string-concatenation">String concatenation</a></li>
+<li><a class="reference internal" href="#string-length">String length</a></li>
+<li><a class="reference internal" href="#string-equality">String equality</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#higher-level-functions">Higher-Level Functions</a><ul>
+<li><a class="reference internal" href="#character-at-index">Character at index</a></li>
+<li><a class="reference internal" href="#substring">Substring</a></li>
+<li><a class="reference internal" href="#prefix-predicate">Prefix predicate</a></li>
+<li><a class="reference internal" href="#suffix-predicate">Suffix predicate</a></li>
+<li><a class="reference internal" href="#contains-predicate">Contains predicate</a></li>
+<li><a class="reference internal" href="#index-of-occurrence">Index of occurrence</a></li>
+<li><a class="reference internal" href="#single-replacement">Single replacement</a></li>
+<li><a class="reference internal" href="#string-to-integer-conversion">String to integer conversion</a></li>
+<li><a class="reference internal" href="#integer-to-string-conversion">Integer to string conversion</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#regular-expressions">Regular Expressions</a><ul>
+<li><a class="reference internal" href="#string-to-regex-match-literal">String to regex (match literal)</a></li>
+<li><a class="reference internal" href="#regular-language-membership">Regular language membership</a></li>
+<li><a class="reference internal" href="#regex-concatenation">Regex concatenation</a></li>
+<li><a class="reference internal" href="#regex-union">Regex union</a></li>
+<li><a class="reference internal" href="#regex-kleene-star">Regex Kleene star</a></li>
+<li><a class="reference internal" href="#regex-plus">Regex plus</a></li>
+<li><a class="reference internal" href="#regex-character-range">Regex character range</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="overview.html" title="Previous Chapter: Overview"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Overview</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="input-language">
+<h1>Input Language<a class="headerlink" href="#input-language" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<div class="section" id="input-language-summary">
+<h2>Input Language Summary<a class="headerlink" href="#input-language-summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="28%" />
+<col width="43%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">Sort</th>
+<th class="head">SMT-LIB</th>
+<th class="head">C++ API</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td colspan="4"><a class="reference internal" href="#section-string-primitives"><span class="std std-ref">String Primitives</span></a></td>
+</tr>
+<tr class="row-odd"><td>String literal</td>
+<td><code class="code docutils literal"><span class="pre">String</span></code></td>
+<td>Any sequence of printable ASCII characters enclosed in double quotes (<code class="code docutils literal"><span class="pre">“”</span></code>),
+such as <code class="code docutils literal"><span class="pre">“example123”</span></code>. A double-quote can be escaped as <code class="code docutils literal"><span class="pre">\”</span></code>.
+See the SMT-LIB 2.5 specification for details.</td>
+<td>Z3_mk_str</td>
+</tr>
+<tr class="row-even"><td>String variable</td>
+<td><code class="code docutils literal"><span class="pre">String</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(declare-const</span> <span class="pre">X</span> <span class="pre">String)</span></code>, or equivalently,
+<code class="code docutils literal"><span class="pre">(declare-fun</span> <span class="pre">X</span> <span class="pre">()</span> <span class="pre">String)</span></code></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>String concatenation</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">x</span> <span class="pre">String</span> <span class="pre">-&gt;</span> <span class="pre">String</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.++</span> <span class="pre">&quot;exa&quot;</span> <span class="pre">&quot;mple&quot;)</span></code></td>
+<td>Z3_mk_str_concat</td>
+</tr>
+<tr class="row-even"><td>String length</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">-&gt;</span> <span class="pre">Int</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.len</span> <span class="pre">&quot;abc123&quot;)</span></code></td>
+<td>Z3_mk_str_length</td>
+</tr>
+<tr class="row-odd"><td>String equality</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">x</span> <span class="pre">String</span> <span class="pre">-&gt;</span> <span class="pre">Bool</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(=</span> <span class="pre">X</span> <span class="pre">&quot;abc&quot;)</span></code></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td colspan="4"><a class="reference internal" href="#section-higher-level-functions"><span class="std std-ref">Higher-Level Functions</span></a></td>
+</tr>
+<tr class="row-odd"><td>Character at index</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">x</span> <span class="pre">Int</span> <span class="pre">-&gt;</span> <span class="pre">String</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.at</span> <span class="pre">&quot;abc&quot;</span> <span class="pre">2)</span></code></td>
+<td>Z3_mk_str_at</td>
+</tr>
+<tr class="row-even"><td>Substring</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">x</span> <span class="pre">Int</span> <span class="pre">x</span> <span class="pre">Int</span> <span class="pre">-&gt;</span> <span class="pre">String</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.substr</span> <span class="pre">&quot;abcdef&quot;</span> <span class="pre">start</span> <span class="pre">count)</span></code></td>
+<td>Z3_mk_str_substr</td>
+</tr>
+<tr class="row-odd"><td>Prefix predicate</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">x</span> <span class="pre">String</span> <span class="pre">-&gt;</span> <span class="pre">Bool</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.prefixof</span> <span class="pre">sPrefix</span> <span class="pre">sFull)</span></code></td>
+<td>Z3_mk_str_prefixof</td>
+</tr>
+<tr class="row-even"><td>Suffix predicate</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">x</span> <span class="pre">String</span> <span class="pre">-&gt;</span> <span class="pre">Bool</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.suffixof</span> <span class="pre">sSuffix</span> <span class="pre">sFull)</span></code></td>
+<td>Z3_mk_str_suffixof</td>
+</tr>
+<tr class="row-odd"><td>Contains predicate</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">x</span> <span class="pre">String</span> <span class="pre">-&gt;</span> <span class="pre">Bool</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.contains</span> <span class="pre">sHaystack</span> <span class="pre">sNeedle)</span></code></td>
+<td>Z3_mk_str_contains</td>
+</tr>
+<tr class="row-even"><td>Index of occurrence</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">x</span> <span class="pre">String</span> <span class="pre">x</span> <span class="pre">Int</span> <span class="pre">-&gt;</span> <span class="pre">Int</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.indexof</span> <span class="pre">sHaystack</span> <span class="pre">sNeedle</span> <span class="pre">iStart)</span></code></td>
+<td>Z3_mk_str_indexof</td>
+</tr>
+<tr class="row-odd"><td>Single replacement</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">x</span> <span class="pre">String</span> <span class="pre">x</span> <span class="pre">String</span> <span class="pre">-&gt;</span> <span class="pre">String</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.replace</span> <span class="pre">sBase</span> <span class="pre">sTarget</span> <span class="pre">sReplacement)</span></code></td>
+<td>Z3_mk_str_replace</td>
+</tr>
+<tr class="row-even"><td>String to integer
+conversion</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">-&gt;</span> <span class="pre">Int</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.to-int</span> <span class="pre">&quot;123&quot;)</span></code></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Integer to string
+conversion</td>
+<td><code class="code docutils literal"><span class="pre">Int</span> <span class="pre">-&gt;</span> <span class="pre">String</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.from-int</span> <span class="pre">123)</span></code></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td colspan="4"><a class="reference internal" href="#section-regular-expressions"><span class="std std-ref">Regular Expressions</span></a></td>
+</tr>
+<tr class="row-odd"><td>String to regex
+(match literal)</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">-&gt;</span> <span class="pre">Regex</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.to.re</span> <span class="pre">&quot;abc123&quot;)</span></code></td>
+<td>Z3_mk_str_to_regex</td>
+</tr>
+<tr class="row-even"><td>Regular language
+membership</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">x</span> <span class="pre">Regex</span> <span class="pre">-&gt;</span> <span class="pre">Bool</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(str.in.re</span> <span class="pre">S</span> <span class="pre">R)</span></code></td>
+<td>Z3_mk_str_in_regex</td>
+</tr>
+<tr class="row-odd"><td>Regex concatenation</td>
+<td><code class="code docutils literal"><span class="pre">Regex</span> <span class="pre">x</span> <span class="pre">Regex</span> <span class="pre">-&gt;</span> <span class="pre">Regex</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(re.++</span> <span class="pre">R1</span> <span class="pre">R2)</span></code></td>
+<td>Z3_mk_regex_concat</td>
+</tr>
+<tr class="row-even"><td>Regex union</td>
+<td><code class="code docutils literal"><span class="pre">Regex</span> <span class="pre">x</span> <span class="pre">Regex</span> <span class="pre">-&gt;</span> <span class="pre">Regex</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(re.union</span> <span class="pre">R1</span> <span class="pre">R2)</span></code></td>
+<td>Z3_mk_regex_union</td>
+</tr>
+<tr class="row-odd"><td>Regex Kleene star</td>
+<td><code class="code docutils literal"><span class="pre">Regex</span> <span class="pre">-&gt;</span> <span class="pre">Regex</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(re.*</span> <span class="pre">R)</span></code></td>
+<td>Z3_mk_regex_star</td>
+</tr>
+<tr class="row-even"><td>Regex plus</td>
+<td><code class="code docutils literal"><span class="pre">Regex</span> <span class="pre">-&gt;</span> <span class="pre">Regex</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(re.+</span> <span class="pre">&quot;abc123&quot;)</span></code></td>
+<td>Z3_mk_regex_plus</td>
+</tr>
+<tr class="row-odd"><td>Regex character range</td>
+<td><code class="code docutils literal"><span class="pre">String</span> <span class="pre">x</span> <span class="pre">String</span> <span class="pre">-&gt;</span> <span class="pre">Regex</span></code></td>
+<td><code class="code docutils literal"><span class="pre">(re.range</span> <span class="pre">&quot;a&quot;</span> <span class="pre">&quot;z&quot;)</span></code></td>
+<td>Z3_mk_regex_range</td>
+</tr>
+<tr class="row-even"><td colspan="4"><strong>Bit-Vector Integration (Chapter TBD)</strong></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><strong>Library-Aware String Methods (Chapter TBD)</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="string-primitives">
+<span id="section-string-primitives"></span><h2>String Primitives<a class="headerlink" href="#string-primitives" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="section" id="string-literals">
+<h3>String literals<a class="headerlink" href="#string-literals" title="Permalink to this headline">¶</a></h3>
+<p>String literals are expressed as a sequence of ASCII printable characters enclosed in double quotes.
+In SMT-LIB 2.5 syntax, a double quote is escaped inside a string as <code class="code docutils literal"><span class="pre">&quot;&quot;</span></code>. All other escape sequences are interpreted in the usual way,
+e.g. the sequence <code class="code docutils literal"><span class="pre">\t</span></code> is expanded to a tab character, the sequence <code class="code docutils literal"><span class="pre">\\</span></code> is expanded to a single backslash, etc.
+In addition, the character sequence <code class="code docutils literal"><span class="pre">\xNN</span></code> is a hexadecimal escape, where <code class="code docutils literal"><span class="pre">NN</span></code> is a two-digit hexadecimal constant
+(using any of 0-9a-fA-F as hex digits) and the sequence is converted to the single ASCII character having the given hexadecimal value.</p>
+<p><strong>Examples:</strong></p>
+<p>The following are all valid SMT-LIB 2.5 string literals:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;abc&quot;</span>
+<span class="s2">&quot;123;456&quot;</span>
+<span class="s2">&quot;say &quot;&quot;hello&quot;&quot; everyone&quot;</span>
+</pre></div>
+</div>
+<p>The following is also a valid SMT-LIB 2.5 string literal:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;field1</span><span class="se">\t</span><span class="s2">field2&quot;</span>
+</pre></div>
+</div>
+<p>It is expanded to the following sequence of characters (spaces added for clarity):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="n">i</span> <span class="n">e</span> <span class="n">l</span> <span class="n">d</span> <span class="mi">1</span> <span class="n">TAB</span> <span class="n">f</span> <span class="n">i</span> <span class="n">e</span> <span class="n">l</span> <span class="n">d</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>The string literals “x41” and “A” represent identical string constants, even though they are written two different ways.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="string-variables">
+<h3>String variables<a class="headerlink" href="#string-variables" title="Permalink to this headline">¶</a></h3>
+<p>Variables may be declared with standard SMT-LIB 2.5 syntax, i.e.
+<code class="code docutils literal"><span class="pre">(declare-const</span> <span class="pre">X</span> <span class="pre">String)</span></code> for a variable X of sort <code class="code docutils literal"><span class="pre">String</span></code>,
+or equivalently, <code class="code docutils literal"><span class="pre">(declare-fun</span> <span class="pre">X</span> <span class="pre">()</span> <span class="pre">String)</span></code>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="string-concatenation">
+<h3>String concatenation<a class="headerlink" href="#string-concatenation" title="Permalink to this headline">¶</a></h3>
+<p>Two strings may be concatenated with the <code class="code docutils literal"><span class="pre">str.++</span></code> operator.
+The interpretation of this operator is equal to a string formed by appending
+the characters in the second argument to the characters in the first argument,
+keeping them in the same relative order.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.++</span> <span class="pre">&quot;abc&quot;</span> <span class="pre">&quot;def&quot;)</span> <span class="pre">::=</span> <span class="pre">&quot;abcdef&quot;</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.++</span> <span class="pre">&quot;123&quot;</span> <span class="pre">&quot;&quot;)</span> <span class="pre">::=</span> <span class="pre">&quot;123&quot;</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="string-length">
+<h3>String length<a class="headerlink" href="#string-length" title="Permalink to this headline">¶</a></h3>
+<p>The length of a string may be expressed using the <code class="code docutils literal"><span class="pre">str.len</span></code> operator.
+The length of a string is equal to the number of characters in the string.
+This length is of sort <code class="code docutils literal"><span class="pre">Int</span></code> and as a result
+is an arbitrary-precision natural number.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.len</span> <span class="pre">&quot;&quot;)</span> <span class="pre">::=</span> <span class="pre">0</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.len</span> <span class="pre">&quot;abcdef&quot;)</span> <span class="pre">::=</span> <span class="pre">6</span></code></p>
+<p>For information on alternative length semantics that model fixed-precision overflow such as in C/C++ string operations, please refer to Chapter TBD.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="string-equality">
+<h3>String equality<a class="headerlink" href="#string-equality" title="Permalink to this headline">¶</a></h3>
+<p>Equality between any two terms of <code class="code docutils literal"><span class="pre">String</span></code> sort may be asserted with the <code class="code docutils literal"><span class="pre">=</span></code> operator.
+Two strings are considered equal iff they contain the same characters appearing in the same order.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(=</span> <span class="pre">(str.++</span> <span class="pre">&quot;abc&quot;</span> <span class="pre">&quot;&quot;)</span> <span class="pre">(str.++</span> <span class="pre">&quot;&quot;</span> <span class="pre">&quot;abc&quot;))</span> <span class="pre">::=</span> <span class="pre">True</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(=</span> <span class="pre">(str.++</span> <span class="pre">&quot;abc&quot;</span> <span class="pre">&quot;def)</span> <span class="pre">(&quot;abcdefGHI))</span> <span class="pre">::=</span> <span class="pre">False</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+</div>
+<div class="section" id="higher-level-functions">
+<span id="section-higher-level-functions"></span><h2>Higher-Level Functions<a class="headerlink" href="#higher-level-functions" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="section" id="character-at-index">
+<h3>Character at index<a class="headerlink" href="#character-at-index" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(str.at</span> <span class="pre">Str</span> <span class="pre">Idx)</span></code> selects the single character at integer index <code class="code docutils literal"><span class="pre">Idx</span></code>
+in the string <code class="code docutils literal"><span class="pre">Str</span></code>. The first character in a (non-empty) string occurs at index 0.
+If <code class="code docutils literal"><span class="pre">Idx</span></code> is less than 0 or would index a character past the end of the string,
+the value of this term is the empty string <code class="code docutils literal"><span class="pre">&quot;&quot;</span></code>. Otherwise,
+the value of this term is a string of length 1 corresponding to the index character in <code class="code docutils literal"><span class="pre">Str</span></code>.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.at</span> <span class="pre">&quot;abcde&quot;</span> <span class="pre">2)</span> <span class="pre">::=</span> <span class="pre">&quot;c&quot;</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.at</span> <span class="pre">&quot;abcde&quot;</span> <span class="pre">5)</span> <span class="pre">::=</span> <span class="pre">&quot;&quot;</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.at</span> <span class="pre">&quot;abcde&quot;</span> <span class="pre">-1)</span> <span class="pre">::=</span> <span class="pre">&quot;&quot;</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="substring">
+<h3>Substring<a class="headerlink" href="#substring" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(str.substr</span> <span class="pre">Str</span> <span class="pre">Start</span> <span class="pre">Len)</span></code> denotes the substring of <code class="code docutils literal"><span class="pre">Str</span></code> of length <code class="code docutils literal"><span class="pre">Len</span></code>,
+taken beginning at index <code class="code docutils literal"><span class="pre">Start</span></code>.
+If <code class="code docutils literal"><span class="pre">Start</span></code> is less than 0 or would denote a position past the end of the string,
+or if the resulting substring would extend past the end of <code class="code docutils literal"><span class="pre">Str</span></code>,
+the value of this term is undefined.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.substr</span> <span class="pre">&quot;abcde&quot;</span> <span class="pre">1</span> <span class="pre">3)</span> <span class="pre">::=</span> <span class="pre">&quot;bcd&quot;</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="prefix-predicate">
+<h3>Prefix predicate<a class="headerlink" href="#prefix-predicate" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(str.prefixof</span> <span class="pre">Pre</span> <span class="pre">Full)</span></code> is a predicate that is true iff
+the string <code class="code docutils literal"><span class="pre">Pre</span></code> is a prefix of the string <code class="code docutils literal"><span class="pre">Full</span></code>.
+More precisely, <code class="code docutils literal"><span class="pre">(str.prefixof</span> <span class="pre">Pre</span> <span class="pre">Full)</span></code> is true iff there exists a string <code class="code docutils literal"><span class="pre">S</span></code>
+such that <code class="code docutils literal"><span class="pre">Full</span> <span class="pre">==</span> <span class="pre">(str.++</span> <span class="pre">Pre</span> <span class="pre">S)</span></code>.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.prefixof</span> <span class="pre">&quot;abc&quot;</span> <span class="pre">&quot;abcde&quot;)</span> <span class="pre">::=</span> <span class="pre">True</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.prefixof</span> <span class="pre">&quot;cde&quot;</span> <span class="pre">&quot;abcde&quot;)</span> <span class="pre">::=</span> <span class="pre">False</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="suffix-predicate">
+<h3>Suffix predicate<a class="headerlink" href="#suffix-predicate" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(str.suffixof</span> <span class="pre">Post</span> <span class="pre">Full)</span></code> is a predicate that is true iff
+the string <code class="code docutils literal"><span class="pre">Post</span></code> is a suffix of the string <code class="code docutils literal"><span class="pre">Full</span></code>.
+More precisely, <code class="code docutils literal"><span class="pre">(str.suffixof</span> <span class="pre">Post</span> <span class="pre">Full)</span></code> is true iff there exists a string <code class="code docutils literal"><span class="pre">S</span></code>
+such that <code class="code docutils literal"><span class="pre">Full</span> <span class="pre">==</span> <span class="pre">(str.++</span> <span class="pre">S</span> <span class="pre">Post)</span></code>.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.suffixof</span> <span class="pre">&quot;cde&quot;</span> <span class="pre">&quot;abcde&quot;)</span> <span class="pre">::=</span> <span class="pre">True</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.suffixof</span> <span class="pre">&quot;abc&quot;</span> <span class="pre">&quot;abcde&quot;)</span> <span class="pre">::=</span> <span class="pre">True</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="contains-predicate">
+<h3>Contains predicate<a class="headerlink" href="#contains-predicate" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(str.contains</span> <span class="pre">Haystack</span> <span class="pre">Needle)</span></code> is a predicate that is true
+iff the string <code class="code docutils literal"><span class="pre">Haystack</span></code> contains the string <code class="code docutils literal"><span class="pre">Needle</span></code>.
+More precisely, <code class="code docutils literal"><span class="pre">(str.contains</span> <span class="pre">Haystack</span> <span class="pre">Needle)</span></code> is true iff
+there exist strings <code class="code docutils literal"><span class="pre">S</span></code> and <code class="code docutils literal"><span class="pre">T</span></code> such that
+<code class="code docutils literal"><span class="pre">Haystack</span> <span class="pre">==</span> <span class="pre">(str.++</span> <span class="pre">S</span> <span class="pre">(str.++</span> <span class="pre">Needle</span> <span class="pre">T))</span></code>.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.contains</span> <span class="pre">&quot;abcde&quot;</span> <span class="pre">&quot;bc&quot;)</span> <span class="pre">::=</span> <span class="pre">True</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.contains</span> <span class="pre">&quot;abcde&quot;</span> <span class="pre">&quot;ae&quot;)</span> <span class="pre">::=</span> <span class="pre">False</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="index-of-occurrence">
+<h3>Index of occurrence<a class="headerlink" href="#index-of-occurrence" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(str.indexof</span> <span class="pre">Haystack</span> <span class="pre">Needle</span> <span class="pre">Start)</span></code>
+is the integer position of the first occurrence of the string <code class="code docutils literal"><span class="pre">Needle</span></code>
+in the string <code class="code docutils literal"><span class="pre">Haystack</span></code> at or after the integer index <code class="code docutils literal"><span class="pre">Start</span></code>,
+if any. If <code class="code docutils literal"><span class="pre">Needle</span></code> is not a substring of <code class="code docutils literal"><span class="pre">Haystack</span></code>,
+or <code class="code docutils literal"><span class="pre">Start</span></code> is either negative or denotes a position beyond the end of <code class="code docutils literal"><span class="pre">Haystack</span></code>,
+or <code class="code docutils literal"><span class="pre">Needle</span></code> is the empty string, then the value of this term is -1.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.indexof</span> <span class="pre">&quot;AbcAbcAbc&quot;</span> <span class="pre">&quot;Abc&quot;</span> <span class="pre">2)</span> <span class="pre">::=</span> <span class="pre">3</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.indexof</span> <span class="pre">&quot;AbcAbcAbc&quot;</span> <span class="pre">&quot;xyz&quot;</span> <span class="pre">0)</span> <span class="pre">::=</span> <span class="pre">-1</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.indexof</span> <span class="pre">&quot;AbcAbcAbc&quot;</span> <span class="pre">&quot;Abc&quot;</span> <span class="pre">10)</span> <span class="pre">::=</span> <span class="pre">-1</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="single-replacement">
+<h3>Single replacement<a class="headerlink" href="#single-replacement" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(str.replace</span> <span class="pre">Base</span> <span class="pre">Target</span> <span class="pre">Replacement)</span></code>
+is equal to the string obtained by replacing the first occurrence of
+<code class="code docutils literal"><span class="pre">Target</span></code> in the string <code class="code docutils literal"><span class="pre">Base</span></code> with the string <code class="code docutils literal"><span class="pre">Replacement</span></code>.
+If the string <code class="code docutils literal"><span class="pre">Target</span></code> does not occur in <code class="code docutils literal"><span class="pre">Base</span></code>,
+the term is equal to the unchanged string <code class="code docutils literal"><span class="pre">Base</span></code>.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.replace</span> <span class="pre">&quot;abcXYZdeXYZf&quot;</span> <span class="pre">&quot;XYZ&quot;</span> <span class="pre">&quot;999&quot;)</span> <span class="pre">::=</span> <span class="pre">&quot;abc999deXYZf&quot;</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.replace</span> <span class="pre">&quot;ababc&quot;</span> <span class="pre">&quot;ab&quot;</span> <span class="pre">&quot;&quot;)</span> <span class="pre">::=</span> <span class="pre">&quot;abc&quot;</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.replace</span> <span class="pre">&quot;abcdef&quot;</span> <span class="pre">&quot;xyz&quot;</span> <span class="pre">&quot;999&quot;)</span> <span class="pre">::=</span> <span class="pre">&quot;abcdef&quot;</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="string-to-integer-conversion">
+<h3>String to integer conversion<a class="headerlink" href="#string-to-integer-conversion" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(str.to-int</span> <span class="pre">Str)</span></code> is equal to the
+integer formed by the digits of the string <code class="code docutils literal"><span class="pre">Str</span></code>.
+Conversion to an integer is performed as follows:</p>
+<ul class="simple">
+<li>If <code class="code docutils literal"><span class="pre">Str</span></code> is the empty string, the value of this term is -1.</li>
+<li>If <code class="code docutils literal"><span class="pre">Str</span></code> contains any non-digit characters, the value of this term is -1.</li>
+<li>Otherwise, the value of this term is the base-10 natural number represented by the digits of <code class="code docutils literal"><span class="pre">Str</span></code>.</li>
+</ul>
+<p>Note that leading zeroes are permitted but are effectively ignored.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.to-int</span> <span class="pre">&quot;123&quot;)</span> <span class="pre">::=</span> <span class="pre">123</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.to-int</span> <span class="pre">&quot;00123&quot;)</span> <span class="pre">::=</span> <span class="pre">123</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.to-int</span> <span class="pre">&quot;nine</span> <span class="pre">thousand&quot;)</span> <span class="pre">::=</span> <span class="pre">-1</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.to-int</span> <span class="pre">&quot;-50&quot;)</span> <span class="pre">::=</span> <span class="pre">-1</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="integer-to-string-conversion">
+<h3>Integer to string conversion<a class="headerlink" href="#integer-to-string-conversion" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(str.from-int</span> <span class="pre">N)</span></code> is equal to the
+minimal base-10 string representation of the integer <code class="code docutils literal"><span class="pre">N</span></code>.
+Conversion to a string is performed as follows:</p>
+<ul class="simple">
+<li>If <code class="code docutils literal"><span class="pre">N</span></code> is less than 0, the value of this term is the empty string <code class="code docutils literal"><span class="pre">&quot;&quot;</span></code>.</li>
+<li>If <code class="code docutils literal"><span class="pre">N</span></code> is equal to 0, the value of this term is the string <code class="code docutils literal"><span class="pre">&quot;0&quot;</span></code>.</li>
+<li>Otherwise, the value of this term is a string <code class="code docutils literal"><span class="pre">S</span></code> containing only the digits 0 through 9,
+does not contain any leading zeroes,
+and is a base-10 string representation of <code class="code docutils literal"><span class="pre">N</span></code>, i.e. it satisfies <code class="code docutils literal"><span class="pre">(str.to-int</span> <span class="pre">S)</span> <span class="pre">==</span> <span class="pre">N</span></code>.</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.from-int</span> <span class="pre">123)</span> <span class="pre">::=</span> <span class="pre">&quot;123&quot;</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.from-int</span> <span class="pre">0)</span> <span class="pre">::=</span> <span class="pre">&quot;0&quot;</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.from-int</span> <span class="pre">-50)</span> <span class="pre">::=</span> <span class="pre">&quot;&quot;</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+</div>
+<div class="section" id="regular-expressions">
+<span id="section-regular-expressions"></span><h2>Regular Expressions<a class="headerlink" href="#regular-expressions" title="Permalink to this headline">¶</a></h2>
+<p>Note that in all regular expression terms, subexpressions of sort <code class="code docutils literal"><span class="pre">Regex</span></code> must be constant expressions
+(i.e. they may not contain free variables, conditional expressions, etc.).</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="section" id="string-to-regex-match-literal">
+<h3>String to regex (match literal)<a class="headerlink" href="#string-to-regex-match-literal" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(str.to.re</span> <span class="pre">S)</span></code> defines the regular language whose only member is the string <code class="code docutils literal"><span class="pre">S</span></code>.
+The subexpression <code class="code docutils literal"><span class="pre">S</span></code> must be a string constant or constant expression; otherwise, an error is raised.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="regular-language-membership">
+<h3>Regular language membership<a class="headerlink" href="#regular-language-membership" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(str.in.re</span> <span class="pre">S</span> <span class="pre">R)</span></code> denotes the predicate that the string <code class="code docutils literal"><span class="pre">S</span></code> is a member of the regular language <code class="code docutils literal"><span class="pre">R</span></code>.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(str.in.re</span> <span class="pre">&quot;abc&quot;</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;abc&quot;))</span> <span class="pre">::=</span> <span class="pre">True</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.in.re</span> <span class="pre">&quot;A&quot;</span> <span class="pre">(re.++</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;A&quot;)</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;B&quot;)))</span> <span class="pre">::=</span> <span class="pre">False</span></code></p>
+<p><code class="code docutils literal"><span class="pre">(str.in.re</span> <span class="pre">&quot;A&quot;</span> <span class="pre">(re.union</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;A&quot;)</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;B&quot;)))</span> <span class="pre">::=</span> <span class="pre">False</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="regex-concatenation">
+<h3>Regex concatenation<a class="headerlink" href="#regex-concatenation" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(re.++</span> <span class="pre">R1</span> <span class="pre">R2)</span></code> denotes the regular language formed by concatenating any string in <code class="code docutils literal"><span class="pre">R1</span></code>
+with any string in <code class="code docutils literal"><span class="pre">R2</span></code>.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(re.++</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;A&quot;)</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;B&quot;))</span> <span class="pre">::=</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;AB&quot;)</span></code></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="regex-union">
+<h3>Regex union<a class="headerlink" href="#regex-union" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(re.union</span> <span class="pre">R1</span> <span class="pre">R2)</span></code> denotes the regular language that is the union of all strings in <code class="code docutils literal"><span class="pre">R1</span></code> and all strings in <code class="code docutils literal"><span class="pre">R2</span></code>.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(re.union</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;A&quot;)</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;B&quot;))</span></code> is the regular language <code class="code docutils literal"><span class="pre">{&quot;A&quot;,</span> <span class="pre">&quot;B&quot;}</span></code>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="regex-kleene-star">
+<h3>Regex Kleene star<a class="headerlink" href="#regex-kleene-star" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(re.*</span> <span class="pre">R)</span></code> denotes the Kleene closure of the regular language <code class="code docutils literal"><span class="pre">R</span></code>, i.e., the language of all finite-length strings that can be formed
+by concatenating zero or more arbitrary members of <code class="code docutils literal"><span class="pre">R</span></code>.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(re.*</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;A&quot;))</span></code> is the regular language <code class="code docutils literal"><span class="pre">{&quot;&quot;,</span> <span class="pre">&quot;A&quot;,</span> <span class="pre">&quot;AA&quot;,</span> <span class="pre">&quot;AAA&quot;,</span> <span class="pre">...}</span></code>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="regex-plus">
+<h3>Regex plus<a class="headerlink" href="#regex-plus" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(re.+</span> <span class="pre">R)</span></code> denotes the language of all finite-length strings that can be formed by concatenating <em>at least one</em> or more
+arbitrary members of <code class="code docutils literal"><span class="pre">R</span></code>. Unlike the Kleene star, the empty string is not a member of this language.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(re.+</span> <span class="pre">(str.to.re</span> <span class="pre">&quot;A&quot;))</span></code> is the regular language <code class="code docutils literal"><span class="pre">{&quot;A&quot;,</span> <span class="pre">&quot;AA&quot;,</span> <span class="pre">&quot;AAA&quot;,</span> <span class="pre">...}</span></code>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="regex-character-range">
+<h3>Regex character range<a class="headerlink" href="#regex-character-range" title="Permalink to this headline">¶</a></h3>
+<p>The term <code class="code docutils literal"><span class="pre">(re.range</span> <span class="pre">C1</span> <span class="pre">C2)</span></code> denotes a regular language containing each element in a range of ASCII characters.
+The strings <code class="code docutils literal"><span class="pre">C1,</span> <span class="pre">C2</span></code> must be string literals of length 1. The character range described is all ASCII characters
+from <code class="code docutils literal"><span class="pre">C1</span></code> up to and including <code class="code docutils literal"><span class="pre">C2</span></code>. It is not valid if the ASCII value of <code class="code docutils literal"><span class="pre">C2</span></code> is smaller than that of <code class="code docutils literal"><span class="pre">C1</span></code>.</p>
+<p><strong>Examples:</strong></p>
+<p><code class="code docutils literal"><span class="pre">(re.range</span> <span class="pre">&quot;a&quot;</span> <span class="pre">&quot;z&quot;)</span></code> is the regular language containing the characters <code class="code docutils literal"><span class="pre">{&quot;a&quot;,</span> <span class="pre">&quot;b&quot;,</span> <span class="pre">&quot;c&quot;,</span> <span class="pre">...,</span> <span class="pre">&quot;x&quot;,</span> <span class="pre">&quot;y&quot;,</span> <span class="pre">&quot;z&quot;}</span></code>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, Z3Str String Solver Team.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
