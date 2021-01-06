@@ -1234,9 +1234,9 @@ pre code {
   }
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 975px) {
   .container {
-    max-width: 970px;
+    max-width: 975px;
   }
   .col-lg-1,
   .col-lg-1-half,
@@ -1252,6 +1252,7 @@ pre code {
   .col-lg-9,
   .col-lg-9-half,
   .col-lg-10,
+  .col-lg-10-half,
   .col-lg-11 {
     float: left;
   }
@@ -1296,6 +1297,9 @@ pre code {
   }
   .col-lg-10 {
     width: 83.33333333333334%;
+  }
+  .col-lg-10-half {
+    width: 87.666666666666668%;
   }
   .col-lg-11 {
     width: 91.66666666666666%;
@@ -1377,6 +1381,9 @@ pre code {
   }
   .col-lg-offset-0 {
     margin-left: 0;
+  }
+  .col-lg-offset-half {
+    margin-left: 4.166666666666666%;
   }
   .col-lg-offset-1 {
     margin-left: 8.333333333333332%;
