@@ -6,6 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const blockedUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+      if (navigator.userAgent === blockedUserAgent) {
+        document.body.innerHTML = "";
+      }
+    });
+  </script>
   <link href="assets/css/bootstrap.css" rel="stylesheet">
   <link href="assets/css/main.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/font-awesome.min.css">
